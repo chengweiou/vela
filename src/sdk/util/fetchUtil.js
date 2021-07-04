@@ -4,8 +4,8 @@ import exceptionUtil from './exceptionUtil'
 import dataMap from './data'
 export default class {
   static async run(url, options) {
-    return this.runPredev(url, options) // 当后端没有数据，前端需要自行编辑数据的时候
-    // return this.r(url, options)
+    // return this.runPredev(url, options) // 当后端没有数据，前端需要自行编辑数据的时候
+    return this.r(url, options)
   }
   static async r(url, options) {
     options.headers = new Headers(options.headers)
@@ -16,6 +16,8 @@ export default class {
       }
     }
     options.headers.append('Authorization', `Bearer ${storage.get('token')}`)
+    // todo tip: 这个项目 controller 这里特别, 不要复用与其他项目 fetchUtil
+    options.headers.append('loginAccount', `${storage.get('loginAccount')}`)
     let response = {}
     try {
       response = await fetch(url, options)

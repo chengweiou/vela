@@ -1,9 +1,8 @@
 import clone from '@/fn/util/clone'
-
 const CLEAN_STATE = {
   db: true,
   cache: false,
-  save: { img: '' },
+  save: {  },
 }
 
 const state = clone(CLEAN_STATE)
@@ -11,6 +10,9 @@ const state = clone(CLEAN_STATE)
 const actions = {
   async save({ commit, dispatch, state, rootState }, payload, config = {}) {
     commit('save', payload)
+  },
+  async cleanSave({ commit, dispatch, state, rootState }, payload, config = {}) {
+    commit('save', clone(CLEAN_STATE).save)
   },
 }
 

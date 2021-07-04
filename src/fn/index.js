@@ -4,6 +4,7 @@ import phone from './filter/phone'
 import wait from './util/wait'
 import storage from '@/sdk/util/storage'
 import site from '@/sdk/config/site'
+import valid from './util/valid'
 export default function setGlobal(globalProperties) {
   globalProperties.$filter = {
     date, number, phone,
@@ -11,4 +12,5 @@ export default function setGlobal(globalProperties) {
   globalProperties.$wait = wait
   globalProperties.$storage = storage
   globalProperties.$img = site.xxx
+  globalProperties.$valid = valid
 }

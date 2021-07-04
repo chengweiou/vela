@@ -1,3 +1,5 @@
+// todo 旧版vela2的这个db文件，有些不同，待会看看
+
 /**
  * todo 与store.state.me 绑定过强，考虑分离
  */

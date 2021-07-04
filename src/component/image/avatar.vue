@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import centerImage from '@/component/image/centerImage'
+import centerImage from '@/component/image/centerImage.vue'
 export default {
   components: {
     centerImage,
