@@ -1,12 +1,13 @@
 export default class {
+  // todo tip: 多用户登录测试，改为sessionStorage
   static set(key, value) {
     if (!value) {
       return
     }
-    localStorage.setItem(key, JSON.stringify(value))
+    sessionStorage.setItem(key, JSON.stringify(value))
   }
   static get(key) {
-    let value = localStorage.getItem(key)
+    let value = sessionStorage.getItem(key)
     try {
       return JSON.parse(value)
     } catch (e) {
@@ -14,6 +15,6 @@ export default class {
     }
   }
   static remove(key) {
-    localStorage.removeItem(key)
+    sessionStorage.removeItem(key)
   }
 }
