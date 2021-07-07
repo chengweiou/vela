@@ -2,7 +2,7 @@ services:
   vela:
     container_name: vela
     ports:
-      - 61002:80
+      - 61106:80
     volumes:
       - ~/Desktop/docker/universe/vela/dist/:/usr/share/nginx/html/
       - ~/Desktop/docker/universe/vela/default.conf:/etc/nginx/conf.d/default.conf
