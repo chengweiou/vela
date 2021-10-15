@@ -73,6 +73,7 @@ const actions = {
   },
   async onmessage({ commit, dispatch, state, rootState }, payload, config = {}) {
     let roomI = state.list.findIndex(e => e.room.id == payload.room.id)
+    // todo 检查一下，这里没有房间的话，是不是应该添加出来
     if (!~roomI) return
     // 列表文字
     state.list[roomI] = {...state.list[roomI], lastMessage: payload.v}

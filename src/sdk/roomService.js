@@ -6,7 +6,7 @@ export default class {
   static enter(e) {
     let url = `${site.carina}/me/room?${paramUtil.createUrlEncode(e)}`
     let options = {
-      method: 'GET',
+      method: 'POST',
     }
     return fetchUtil.run(url, options)
   }

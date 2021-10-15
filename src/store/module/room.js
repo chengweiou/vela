@@ -155,15 +155,15 @@ const actions = {
       } else if (payload.inRoom) {
         state.historyList.push(payload)
       }
-      msgService.readById({id: payload.id})
-      commit('historyList', state.historyList)
-      if (isServerHistory) {
-        console.log()
-      } else {
-        dispatch('roomDb/save', { room: { id: payload.room.id }, list: state.historyList }, { root: true })
-      }
-      dispatch('changeScroll', true)
     }
+    msgService.readById({id: payload.id})
+    commit('historyList', state.historyList)
+    if (isServerHistory) {
+      console.log()
+    } else {
+      dispatch('roomDb/save', { room: { id: payload.room.id }, list: state.historyList }, { root: true })
+    }
+    dispatch('changeScroll', true)
   },
   async changeScroll({ commit, dispatch, state, rootState }, payload, config = {}) {
     commit('scroll', payload)
