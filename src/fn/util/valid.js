@@ -43,7 +43,7 @@ export default {
     }
     let valid = k === value
     if (!valid) {
-      callback(new Error('用户名已被使用'))
+      callback(new Error('2次密码不一致'))
       return
     }
     callback()

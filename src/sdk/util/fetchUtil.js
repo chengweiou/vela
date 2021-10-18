@@ -15,7 +15,7 @@ export default class {
         options.headers.append('Content-Type', 'application/x-www-form-urlencoded')
       }
     }
-    options.headers.append('Authorization', `Bearer ${storage.get('token')}`)
+    options.headers.append('authorization', `Bearer ${storage.get('token')}`)
     // todo tip: 这个项目 这里特别, 不要复用与其他项目 fetchUtil
     // 直接带登录账号请求服务端
     options.headers.append('loginAccount', `${storage.get('loginAccount')}`)
