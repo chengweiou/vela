@@ -1,5 +1,6 @@
 import service from '@/sdk/accountService'
 import clone from '@/fn/util/clone'
+import empty from '@/fn/data/empty'
 
 const CLEAN_STATE = {
   total: 0,

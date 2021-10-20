@@ -2,6 +2,7 @@ import accountService from '@/sdk/accountService'
 import personService from '@/sdk/personService'
 import { router } from '@/router'
 import clone from '@/fn/util/clone'
+import empty from '@/fn/data/empty'
 const CLEAN_STATE = {
   showLogin: false,
   user: {},

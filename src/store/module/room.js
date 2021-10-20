@@ -4,11 +4,12 @@ import msgService from '@/sdk/msgService'
 import personService from '@/sdk/personService'
 import friendService from '@/sdk/friendService'
 import clone from '@/fn/util/clone'
+import empty from '@/fn/data/empty'
 import historyService from '@/sdk/historyService'
 
 const CLEAN_STATE = {
   cache: false,
-  detail: { person: {} },
+  detail: empty.room,
   personList: [],
   // todo 判断server history的时候才出现
   historyTotal: 0,
