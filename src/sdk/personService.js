@@ -25,14 +25,14 @@ class Me {
 
 class Mg {
   static count(filter) {
-    let url = `${site.carina}/mg/person/count?${paramUtil.createUrlEncode(filter)}`
+    let url = `${site.carina}/person/count?${paramUtil.createUrlEncode(filter)}`
     let options = {
       method: 'GET',
     }
     return fetchUtil.run(url, options)
   }
   static find(filter) {
-    let url = `${site.carina}/mg/person?${paramUtil.createUrlEncode(filter)}`
+    let url = `${site.carina}/person?${paramUtil.createUrlEncode(filter)}`
     let options = {
       method: 'GET',
     }

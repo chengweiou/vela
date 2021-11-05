@@ -12,18 +12,24 @@
     </el-footer>
   </el-container>
 </template>
-<script>
+<script setup>
+// tip: 导入 component
 import projHeader from '@/component/nav/projHeader.vue'
 import projFooter from '@/component/nav/projFooter.vue'
 import projAsider from '@/component/nav/projAsider.vue'
-export default {
-  components: {
-    projHeader, projFooter, projAsider,
-  },
-  computed: {
-  },
-  created() {
-    this.$store.dispatch('ws/connect')
-  },
-}
+// tip: 导入 data
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { wait, empty, clone, storage } from '@/fn'
+// tip: 定义 各种 use
+const store = useStore(), router = useRouter(), route = useRoute(), { t, locale } = useI18n({ inheritLocale: true })
+// tip: 定义 页面
+// tip: 定义 不需要关联的
+// tip: 定义 需要关联的
+// tip: 定义 computed 计算的
+// tip: 定义 方法
+// tip: 初始化空数据
+store.dispatch('ws/connect')
 </script>

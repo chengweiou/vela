@@ -13,7 +13,7 @@ const CLEAN_STATE = {
 const state = clone(CLEAN_STATE)
 const actions = {
   async login({ commit, dispatch, state, rootState }, payload, config = {}) {
-    let rest = await accountService.login(payload)
+    let rest = await accountService.all().login(payload)
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return

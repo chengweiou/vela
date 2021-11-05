@@ -3,12 +3,16 @@ import site from './config/site'
 import paramUtil from './util/paramUtil'
 
 export default class {
+  static all() { return All }
+  static me() { return Me }
+  static mg() { return Mg }
+}
+class All {
+}
+class Me {
   static send(e) {
     let url = `${site.carina}/me/msg`
-    let formData = new FormData()
-    formData.append('room.id', e.room.id)
-    formData.append('type', e.type)
-    formData.append('v', e.v)
+    let formData = paramUtil.createFormData(e)
     let options = {
       method: 'POST',
       body: formData,
@@ -29,4 +33,6 @@ export default class {
     }
     return fetchUtil.run(url, options)
   }
+}
+class Mg {
 }

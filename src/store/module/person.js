@@ -7,7 +7,7 @@ const CLEAN_STATE = {
   page: { curr: 1 },
   filter: { k: '', skip: 0, limit: 10 },
   list: [],
-  detail: empty.person,
+  detail: empty.person(),
 }
 
 const state = clone(CLEAN_STATE)

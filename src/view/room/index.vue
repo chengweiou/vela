@@ -1,13 +1,13 @@
 <template>
   <div class="df">
     <div class="df df-column" style="flex: 1;">
-      <div ref="historyArea" style="margin-right: 20px; height: 300px; overflow-y: scroll;">
+      <div ref="historyAreaDom" style="margin-right: 20px; height: 300px; overflow-y: scroll;">
         <div v-if="isServerHistory">
           <div v-if="moreHistory" class="center link pointer" @click="find">加载更多...</div>
           <div v-else class="center">已经是全部记录了</div>
         </div>
         <section v-for="(e, i) in historyList" :key="i">
-          <div v-if="e.showTime" class="center" style="margin: 10px;">{{ $filter.date(e.updateAt) }}</div>
+          <div v-if="e.showTime" class="center" style="margin: 10px;">{{ date(e.updateAt) }}</div>
           <div class="df" :class="e.sender.id == me.id ? 'selfPosition' : 'otherPosition'">
             <!-- <div style="width: 30px; height: 30px;"><avatar :src="personList.find(p=>p.id=e.sender.id).imgsrc" /></div> -->
             <div>
@@ -46,136 +46,137 @@
   </div>
 </template>
 
-<script>
+<script setup>
+// tip: 导入 component
 import centerImage from '@/component/image/centerImage.vue'
 import avatar from '@/component/image/avatar.vue'
-export default {
-  components: {
-    avatar, centerImage,
-  },
-  beforeRouteLeave(to, from, next) {
-    // 处理在房间内登出的情况
-    if (this.detail.id) this.$store.dispatch('room/leave', {id: this.detail.id})
-    next()
-  },
-  data() {
-    return {
-      loading: false,
-      form: { v: '' },
-    }
-  },
-  computed: {
-    isServerHistory() { return import.meta.env.VITE_APP_HOST.VUE_APP_SERVER_HISTORY },
-    me() { return this.$store.state.me.user },
-    detail() { return this.$store.state.room.detail },
-    personList() { return this.$store.state.room.personList },
-    historyList() { return this.$store.state.room.historyList },
-    // todo 判断server history的时候才出现
-    moreHistory() { return this.$store.state.room.historyFilter.skip < this.$store.state.room.historyTotal },
-    scroll() { return this.$store.state.room.scroll },
-  },
-  watch: {
-    scroll() {
-      if (this.scroll) this.toBottom()
-      this.$store.dispatch('room/changeScroll', false)
-    },
-  },
-  async created() {
-    if (this.isServerHistory) await this.reset()
-    await this.enterRoom()
-    this.findPerson()
-    await this.read()
-    // 需要maxId
-    if (this.isServerHistory) this.count()
-  },
-  methods: {
-    // todo 判断server history的时候才出现
-    async reset() {
-      await this.$store.dispatch('room/reset')
-    },
-    async enterRoom() {
-      this.loading = true
-      let pList = await Promise.all([this.$store.dispatch('room/enter', {id: this.$route.params.id}), this.$wait(1000)])
-      this.loading = false
-      if (!pList[0]) return
-      this.$notify({ type: 'success', title: '进入房间成功' })
-    },
-    async findPerson() {
-      this.loading = true
-      let pList = await Promise.all([this.$store.dispatch('room/findPerson', {idList: this.detail.personIdList}), this.$wait(1000)])
-      this.loading = false
-      if (!pList[0]) return
-      this.$notify({ type: 'success', title: '读取成员列表成功' })
-      this.checkFriend()
-    },
-    async checkFriend() {
-      await this.$store.dispatch('room/checkFriend', {targetIdList: this.detail.personIdList.filter(e=>e!=this.me.id)})
-    },
-    async read() {
-      this.loading = true
-      let pList = await Promise.all([this.$store.dispatch('room/read', {room: {id: this.detail.id}}), this.$wait(1000)])
-      this.loading = false
-      if (!pList[0]) return
-      this.$notify({ type: 'success', title: '读取未读消息成功' })
-      this.$store.dispatch('room/changeScroll', true)
-    },
-    // todo 判断server history的时候才出现
-    async count() {
-      this.$store.dispatch('room/count')
-    },
-    async find() {
-      this.loading = true
-      let pList = await Promise.all([this.$store.dispatch('room/find', {room: {id: this.detail.id}}), this.$wait(1000)])
-      this.loading = false
-      if (!pList[0]) return
-    },
-
-    async send() {
-      if (!this.form.v.trim()) return
-      let msg = {
-        id: 0,
-        room: {id: this.$route.params.id},
-        sender: {id: this.me.id},
-        type: 'TEXT',
-        v: this.form.v,
-      }
-      await this.$store.dispatch('room/sendText', msg)
-      this.$store.dispatch('room/changeScroll', true)
-      this.form.v = ''
-    },
-    async sendImg() {
-      // todo
-      // let msg = {
-      //   id: 0,
-      //   room: {id: this.$route.params.id},
-      //   sender: {id: this.me.id},
-      //   type: 'IMG',
-      // }
-      // await this.$store.dispatch('room/sendImg', msg)
-    },
-    async sendMap() {
-      navigator.geolocation.getCurrentPosition(async(position) => {
-        let msg = {
-          id: 0,
-          room: {id: this.$route.params.id},
-          sender: {id: this.me.id},
-          type: 'MAP',
-          v: `${position.coords.latitude},${position.coords.longitude}`,
-        }
-        await this.$store.dispatch('room/sendText', msg)
-        this.$store.dispatch('room/changeScroll', true)
-      })
-
-    },
-    async toBottom() {
-      this.$refs.historyArea.scrollTop = this.$refs.historyArea.scrollHeight
-    },
-    saveFriend(e) {
-      this.$store.dispatch('friend/save', {target: {id: e.id}})
-    },
-  },
+import { ElNotification } from 'element-plus'
+// tip: 导入 data
+import { ref, computed, onBeforeUnmount, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
+import { wait, empty, clone, date } from '@/fn'
+// tip: 定义 各种 use
+const store = useStore(), router = useRouter(), route = useRoute()
+// tip: 定义 页面
+const historyAreaDom = ref(null)
+// tip: 定义 不需要关联的
+const isServerHistory = import.meta.env.VITE_APP_HOST.VUE_APP_SERVER_HISTORY
+const cleanForm = {
+  v: '',
 }
+// tip: 定义 需要关联的
+const form = ref(clone(cleanForm))
+const loading = ref(false)
+// tip: 定义 computed 计算的
+const me = computed(() => store.state.me.user)
+const detail = computed(() => store.state.room.detail)
+const personList = computed(() => store.state.room.personList)
+const historyList = computed(() => store.state.room.historyList)
+// todo 判断server history的时候才出现
+const moreHistory = computed(() => store.state.room.historyFilter.skip < store.state.room.historyTotal)
+const scroll = computed(() => store.state.room.scroll)
+// tip: 定义 方法
+const enterRoom = async() => {
+  loading.value = true
+  let pList = await Promise.all([store.dispatch('room/enter', {id: route.params.id}), wait(1000)])
+  loading.value = false
+  if (!pList[0]) return
+  ElNotification({ type: 'success', title: '进入房间成功' })
+  findPerson()
+  await read()
+  // 需要maxId
+  if (isServerHistory) count()
+}
+const findPerson = async() => {
+  loading.value = true
+  let pList = await Promise.all([store.dispatch('room/findPerson', {idList: detail.value.personIdList}), wait(1000)])
+  loading.value = false
+  if (!pList[0]) return
+  ElNotification({ type: 'success', title: '读取成员列表成功' })
+  checkFriend()
+}
+const checkFriend = () => {
+  store.dispatch('room/checkFriend', {targetIdList: detail.value.personIdList.filter(e=>e!=me.value.id)})
+}
+const read = async() => {
+  loading.value = true
+  let pList = await Promise.all([store.dispatch('room/read', {room: {id: detail.value.id}}), wait(1000)])
+  loading.value = false
+  if (!pList[0]) return
+  ElNotification({ type: 'success', title: '读取未读消息成功' })
+  store.dispatch('room/changeScroll', true)
+}
+// todo 判断server history的时候才出现
+const count = () => {
+  store.dispatch('room/count')
+}
+const find = async() => {
+  loading.value = true
+  let pList = await Promise.all([store.dispatch('room/find', {room: {id: detail.value.id}}), wait(1000)])
+  loading.value = false
+  if (!pList[0]) return
+}
+const send = async() => {
+  if (!form.value.v.trim()) return
+  let msg = {
+    id: 0,
+    room: {id: route.params.id},
+    sender: {id: me.value.id},
+    type: 'TEXT',
+    v: form.value.v,
+  }
+  await store.dispatch('room/sendText', msg)
+  store.dispatch('room/changeScroll', true)
+  form.value.v = ''
+}
+const sendImg = async() => {
+  // todo
+  // let msg = {
+  //   id: 0,
+  //   room: {id: route.params.id},
+  //   sender: {id: me.value.id},
+  //   type: 'IMG',
+  // }
+  // await store.dispatch('room/sendImg', msg)
+}
+const sendMap = () => {
+  navigator.geolocation.getCurrentPosition(async(position) => {
+    let msg = {
+      id: 0,
+      room: {id: route.params.id},
+      sender: {id: me.value.id},
+      type: 'MAP',
+      v: `${position.coords.latitude},${position.coords.longitude}`,
+    }
+    await store.dispatch('room/sendText', msg)
+    store.dispatch('room/changeScroll', true)
+  })
+
+}
+const toBottom = () => {
+  historyAreaDom.value.scrollTop = historyAreaDom.value.scrollHeight
+}
+const saveFriend = (e) => {
+  store.dispatch('friend/save', {target: {id: e.id}})
+}
+// tip: 初始化空数据
+store.dispatch('room/resetHistoryFilter')
+store.state.room.detail = empty.room()
+store.state.room.personList = []
+enterRoom()
+
+// tip 其他生命周期
+onBeforeUnmount(() => {
+  // 处理在房间内登出的情况
+  if (detail.value.id) store.dispatch('room/leave', {id: detail.value.id})
+})
+watch(scroll, (v, prevV) => {
+  if (scroll.value) toBottom()
+  store.dispatch('room/changeScroll', false)
+})
 </script>
+
 <style scoped>
 .selfPosition { flex-direction: row-reverse; }
 .otherPosition { flex-direction: row; }

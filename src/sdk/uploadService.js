@@ -2,10 +2,14 @@ import fetchUtil from './util/fetchUtil'
 import site from './config/site'
 
 export default class {
+  static all() { return All }
+  static mg() { return Mg }
+}
+class Mg {
   static save(e) {
     if (!e.file) {
       console.error('参数 file: ' + e.file + ', 不正确')
-      return
+      return {code: 'PARAM'}
     }
     let url = `${site.triangulum}/image`
     let formData = new FormData()

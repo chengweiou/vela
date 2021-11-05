@@ -3,7 +3,7 @@ import empty from '@/fn/data/empty'
 const CLEAN_STATE = {
   db: true,
   cache: false,
-  save: empty.person,
+  save: { ...empty.person(), id: null },
 }
 
 const state = clone(CLEAN_STATE)

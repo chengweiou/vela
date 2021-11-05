@@ -1,7 +1,6 @@
 import site from './config/site'
 import storage from './util/storage'
 import wait from '../fn/util/wait'
-import { check } from 'prettier'
 
 export default class wsService {
   static _ws = { readyState: 3 }
@@ -50,7 +49,7 @@ export default class wsService {
     HeartBeat.start(() => this._ws.send(''))
   }
   static async _reconnect() {
-    if (!check()) console.log('达到最大重连次数');
+    if (!Reconnect.check()) console.log('达到最大重连次数');
     await Reconnect.delay()
     this.connect()
   }
@@ -61,7 +60,7 @@ class Reconnect {
   static _timeDelay = [1, 1, 1, 2, 2, 5, 5, 10, 10, 10] // 下次重试时间是: 初始时间 * n
   static _tryCount = 0
   static async delay() {
-    if (!check()) return // 超过重试次数
+    if (!this.check()) return // 超过重试次数
     await wait(this._time * this._timeDelay[this._tryCount])
     this._tryCount++
   }

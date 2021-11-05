@@ -6,7 +6,7 @@
         <el-dropdown @command="handleCommand">
           <div class="center pointer link f-t1" style="width: 50px; height: 50px;">
             <el-badge :value="me.unread" :hidden="me.unread==0">
-              <i class="el-icon-user"></i>
+              <icon-user style="width: 12px;"/>
             </el-badge>
           </div>
           <template #dropdown>
@@ -21,32 +21,43 @@
   </div>
 </template>
 
-<script>
-export default {
-  computed: {
-    me() { return this.$store.state.me.user },
-  },
-  methods: {
-    handleCommand(v) {
-      if (v == 'logout') {
-        this.logout()
-        return
-      }
-      this.go(v)
-    },
-    go(v) {
-      if (this.$route.name == v) return
-      this.$store.dispatch('tab/changeAsider', v)
-      this.$router.push({ name: v })
-    },
-    async logout() {
-      // 处理在房间内登出的情况
-      if (this.$route.name == 'room') await this.$store.dispatch('room/leave', {id: this.$store.state.room.detail.id})
-      await this.$store.dispatch('me/logout')
-      this.$store.dispatch('ws/disconnect')
-    },
-  },
+
+<script setup>
+// tip: 导入 component
+import { User as IconUser } from '@element-plus/icons'
+// tip: 导入 data
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { wait, empty, clone, storage } from '@/fn'
+// tip: 定义 各种 use
+const store = useStore(), router = useRouter(), route = useRoute(), { t, locale } = useI18n({ inheritLocale: true })
+// tip: 定义 页面
+// tip: 定义 不需要关联的
+// tip: 定义 需要关联的
+// tip: 定义 computed 计算的
+const me = computed(() =>store.state.me.user)
+// tip: 定义 方法
+const handleCommand = (v) => {
+  if (v == 'logout') {
+    logout()
+    return
+  }
+  go(v)
 }
+const go = (v) => {
+  if (route.name == v) return
+  store.dispatch('tab/changeAsider', v)
+  router.push({ name: v })
+}
+const logout = async() => {
+  // 处理在房间内登出的情况
+  if (route.name == 'room') await store.dispatch('room/leave', {id: store.state.room.detail.id})
+  await store.dispatch('me/logout')
+  store.dispatch('ws/disconnect')
+}
+// tip: 初始化空数据
 </script>
 
 <style scoped>

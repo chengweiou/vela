@@ -7,14 +7,14 @@ const CLEAN_STATE = {
   page: { curr: 1 },
   filter: { k: '', skip: 0, limit: 10 },
   list: [],
-  detail: empty.personRoomRelate,
+  detail: empty.personRoomRelate(),
 }
 
 const state = clone(CLEAN_STATE)
 
 const actions = {
   async save({ commit, dispatch, state, rootState }, payload, config = {}) {
-    let rest = await service.save(payload)
+    let rest = await service.me().save(payload)
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return
@@ -26,7 +26,7 @@ const actions = {
     return true
   },
   async update({ commit, dispatch, state, rootState }, payload, config = {}) {
-    let rest = await service.update(payload)
+    let rest = await service.me().update(payload)
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return false
@@ -35,7 +35,7 @@ const actions = {
     return true
   },
   async findById({ commit, dispatch, state, rootState }, payload, config = {}) {
-    let rest = await service.findById({ id: payload.id })
+    let rest = await service.me().findById({ id: payload.id })
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return
@@ -53,7 +53,7 @@ const actions = {
     commit('page', payload)
   },
   async count({ commit, dispatch, state, rootState }, payload, config = {}) {
-    let rest = await service.count({ ...state.filter, ...payload })
+    let rest = await service.me().count({ ...state.filter, ...payload })
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return
@@ -61,7 +61,7 @@ const actions = {
     commit('total', rest.data)
   },
   async find({ commit, dispatch, state, rootState }, payload, config = {}) {
-    let rest = await service.find({ ...state.filter, ...payload })
+    let rest = await service.me().find({ ...state.filter, ...payload })
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return

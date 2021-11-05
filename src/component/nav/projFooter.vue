@@ -1,15 +1,8 @@
 <template>
   <div class="center df-column">
-    &copy;2020 spacetimepainting
+    &copy;2020 chengweiou
   </div>
 </template>
-
-<script>
-export default {
-  methods: {
-  },
-}
-</script>
 
 <style scoped>
 </style>

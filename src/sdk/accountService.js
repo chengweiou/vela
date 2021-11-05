@@ -3,12 +3,17 @@ import site from './config/site'
 import storage from './util/storage'
 import paramUtil from './util/paramUtil'
 
-export default class accountService {
 
+export default class accountService {
+  static all() { return All }
+  static me() { return Me }
+  static mg() { return Mg }
+}
+class All {
+  // todo tip: 这个项目的登录特殊
   static login(e) {
     let url = `${site.carina}/test/login`
-    let formData = new FormData()
-    formData.append('person.id', e.person.id)
+    let formData = paramUtil.createFormData(e)
     let options = {
       method: 'POST',
       body: formData,
@@ -20,5 +25,10 @@ export default class accountService {
       return rest
     })
   }
+}
 
+class Me {
+}
+
+class Mg {
 }

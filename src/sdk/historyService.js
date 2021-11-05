@@ -3,6 +3,13 @@ import site from './config/site'
 import paramUtil from './util/paramUtil'
 
 export default class {
+  static all() { return All }
+  static me() { return Me }
+  static mg() { return Mg }
+}
+class All {
+}
+class Me {
   static count(filter) {
     let url = `${site.carina}/me/history/count?${paramUtil.createUrlEncode(filter)}`
     let options = {
@@ -17,4 +24,6 @@ export default class {
     }
     return fetchUtil.run(url, options)
   }
+}
+class Mg {
 }

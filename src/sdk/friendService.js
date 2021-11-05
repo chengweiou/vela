@@ -2,11 +2,18 @@ import fetchUtil from './util/fetchUtil'
 import site from './config/site'
 import paramUtil from './util/paramUtil'
 
+
 export default class {
+  static all() { return All }
+  static me() { return Me }
+  static mg() { return Mg }
+}
+class All {
+}
+class Me {
   static save(e) {
     let url = `${site.carina}/me/friend`
-    let formData = new FormData()
-    formData.append('target.id', e.target.id)
+    let formData = paramUtil.createFormData(e)
     let options = {
       method: 'POST',
       body: formData,
@@ -56,4 +63,6 @@ export default class {
     }
     return fetchUtil.run(url, options)
   }
+}
+class Mg {
 }

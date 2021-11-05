@@ -3,13 +3,16 @@ import site from './config/site'
 import paramUtil from './util/paramUtil'
 
 export default class {
+  static all() { return All }
+  static me() { return Me }
+  static mg() { return Mg }
+}
+class All {
+}
+class Me {
   static save(e) {
     let url = `${site.carina}/me/personRoomRelate`
-    let formData = new FormData()
-    formData.append('name', e.name)
-    formData.append('type', e.type)
-    formData.append('username', e.username)
-    formData.append('password', e.password)
+    let formData = paramUtil.createFormData(e)
     let options = {
       method: 'POST',
       body: formData,
@@ -45,4 +48,6 @@ export default class {
     }
     return fetchUtil.run(url, options)
   }
+}
+class Mg {
 }

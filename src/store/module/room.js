@@ -9,7 +9,7 @@ import historyService from '@/sdk/historyService'
 
 const CLEAN_STATE = {
   cache: false,
-  detail: empty.room,
+  detail: empty.room(),
   personList: [],
   // todo 判断server history的时候才出现
   historyTotal: 0,
@@ -24,11 +24,20 @@ const isServerHistory = import.meta.env.VUE_APP_SERVER_HISTORY
 
 const actions = {
   // todo 判断server history的时候才出现
-  async reset({ commit, dispatch, state, rootState }, payload, config = {}) {
+  async resetHistoryFilter({ commit, dispatch, state, rootState }, payload, config = {}) {
     await commit('historyFilter', clone(CLEAN_STATE).historyFilter)
   },
   async enter({ commit, dispatch, state, rootState }, payload, config = {}) {
-    let rest = await service.enter({ id: payload.id })
+    let rest = await service.me().enter(payload)
+    if (rest.code !== 'OK') {
+      dispatch('failBox/onRest', rest, { root: true })
+      return
+    }
+    commit('detail', rest.data)
+    return true
+  },
+  async findByKey({ commit, dispatch, state, rootState }, payload, config = {}) {
+    let rest = await service.me().findByKey(payload)
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return
@@ -49,14 +58,14 @@ const actions = {
   async checkFriend({ commit, dispatch, state, rootState }, payload, config = {}) {
     let targetList = state.personList.filter(e => e.id!=rootState.me.user.id)
     targetList.forEach(async e => {
-      let rest = await friendService.check({target: {id: e.id}})
+      let rest = await friendService.me().check({target: {id: e.id}})
       let i = state.personList.findIndex(person=>person.id==e.id)
       state.personList[i].isFriend = rest.data
     })
     commit('personList', state.personList)
   },
   async leave({ commit, dispatch, state, rootState }, payload, config = {}) {
-    let rest = await service.leave({ id: payload.id })
+    let rest = await service.me().leave({ id: payload.id })
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return
@@ -71,7 +80,7 @@ const actions = {
       ? []
       : await dispatch('roomDb/find', { room: { id: payload.room.id } }, { root: true })
 
-    let rest = await msgService.read({ room: { id: payload.room.id } })
+    let rest = await msgService.me().read({ room: { id: payload.room.id } })
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return
@@ -99,7 +108,7 @@ const actions = {
   },
   // todo 判断server history的时候才出现
   async count({ commit, dispatch, state, rootState }, payload, config = {}) {
-    let rest = await historyService.count({ ...state.historyFilter, ...payload })
+    let rest = await historyService.me().count({ ...state.historyFilter, ...payload })
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return
@@ -107,7 +116,7 @@ const actions = {
     commit('historyTotal', rest.data)
   },
   async find({ commit, dispatch, state, rootState }, payload, config = {}) {
-    let rest = await historyService.find({ ...state.historyFilter, ...payload })
+    let rest = await historyService.me().find({ ...state.historyFilter, ...payload })
     if (rest.code !== 'OK') {
       dispatch('failBox/onRest', rest, { root: true })
       return
@@ -157,7 +166,7 @@ const actions = {
         state.historyList.push(payload)
       }
     }
-    msgService.readById({id: payload.id})
+    msgService.me().readById({id: payload.id})
     commit('historyList', state.historyList)
     if (isServerHistory) {
       console.log()
