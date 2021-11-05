@@ -1,13 +1,13 @@
 import service from '@/sdk/personRoomRelateService'
 import clone from '@/fn/util/clone'
-import empty from '@/fn/data/empty'
+import emptyFn from '@/fn/data/emptyFn'
 
 const CLEAN_STATE = {
   total: 0,
   page: { curr: 1 },
   filter: { k: '', skip: 0, limit: 10 },
   list: [],
-  detail: empty.personRoomRelate(),
+  detail: emptyFn.personRoomRelate(),
 }
 
 const state = clone(CLEAN_STATE)
