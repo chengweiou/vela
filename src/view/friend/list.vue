@@ -1,36 +1,35 @@
 <template>
-  <div>
-    <topbar>
-      <template #default>列表</template>
-      <template #add><icon-circle-plus style="width: 12px; height: 12px;" @click="go('friendAdd')"/></template>
-      <template #search>
-        <el-input v-model="filter.k" style="margin-right: 20px;" placeholder="search" @keyup.enter="changeFilter" />
-        <el-button type="primary" @click="resetFilter">重置</el-button>
-      </template>
-    </topbar>
-    <el-container v-loading="loading" class="df-column">
-      <el-table style="width: 100%" :data="list" @row-click="goRoom">
-        <el-table-column prop="id" label="id" width="100"></el-table-column>
-        <el-table-column prop="target.id" label="target.id"></el-table-column>
-        <el-table-column prop="updateAt" label="update Time" width="200"><template #default="scope">{{ date(scope.row.updateAt) }}</template></el-table-column>
-        <el-table-column width="100"><template #default="scope">
-          <el-popconfirm title="确认删除" @confirm="remove(scope.row)">
-            <template #reference><icon-delete style="width: 12px;"/></template>
-          </el-popconfirm>
-        </template></el-table-column>
-      </el-table>
-      <div class="df df-jcfe df-aic">
-        <div>Total: {{total}}</div>
-        <el-pagination layout="prev, pager, next" :current-page="page.curr" :page-size="filter.limit" :total="total" @current-change="changePage"></el-pagination>
-      </div>
-    </el-container>
-  </div>
+  <proj-header><icon-pie-chart style="margin-right: 10px; width: 24px;"/>{{total}} 好友</proj-header>
+  <list-search-bar>
+    <el-input v-model="filter.k" style="width: 300px;" placeholder="关键字" @keyup.enter="changeFilter"></el-input>
+    <el-select v-model="sort" placeholder="请选择" @change="changeFilter">
+      <el-option v-for="e in sortList" :key="e.value" :label="e.label" :value="e.value"></el-option>
+    </el-select>
+  </list-search-bar>
+  <el-container v-loading="loading" class="df-column c-black" style="margin: 0 20px;">
+    <list-th-row>
+      <list-th>id</list-th>
+      <list-th>target.id</list-th>
+      <list-th-delete></list-th-delete>
+    </list-th-row>
+    <list-td-row v-for="(e, i) in list" :key="i" @click="goRoom(e)">
+      <list-td>{{e.id}}</list-td>
+      <list-td>{{e.target.id}}</list-td>
+      <list-td-delete @click="remove(e)"></list-td-delete>
+    </list-td-row>
+    <div class="df df-jcfe df-aic" style="margin-bottom: 20px;">
+      <el-pagination layout="prev, pager, next" :current-page="page.curr" :page-size="filter.limit" :total="total" @current-change="changePage"></el-pagination>
+    </div>
+  </el-container>
+
 </template>
 
 <script setup>
 // tip: 导入 component
-import topbar from '@/component/proj/list/topbar.vue'
-import { Delete as IconDelete, CirclePlus as IconCirclePlus } from '@element-plus/icons'
+import ProjHeader from '@/component/nav/projHeader.vue'
+import { PieChart as IconPieChart } from '@element-plus/icons'
+import { ListThRow, ListTdRow, ListTh, ListTd, ListTdDelete, ListThDelete } from '@/component/proj/list'
+import ListSearchBar from '@/component/proj/listSearchBar.vue'
 // tip: 导入 data
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
@@ -56,11 +55,6 @@ const list = computed(() => store.state.friend.list)
 const go = (v) => {
   store.dispatch('tab/changeAsider', v)
   router.push({ name: v })
-}
-const resetFilter = () => {
-  store.dispatch('friend/resetFilter')
-  count()
-  find()
 }
 const changeFilter = () => {
   if (sort.value) {
@@ -96,5 +90,7 @@ const remove = async(e) => {
   find()
 }
 // tip: 初始化空数据
-resetFilter()
+store.dispatch('friend/resetFilter')
+count()
+find()
 </script>

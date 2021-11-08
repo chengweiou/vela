@@ -1,30 +1,16 @@
 <template>
-  <div style="width: 100%;">
-    <div class="df df-jcsb" style="height: 60px;">
-      <section class="center pointer" style="font-size: 24px; " @click="go('home')">聊天测试系统</section>
-      <div class="center" style="width: 100px;">
-        <el-dropdown @command="handleCommand">
-          <div class="center pointer link f-t1" style="width: 50px; height: 50px;">
-            <el-badge :value="me.unread" :hidden="me.unread==0">
-              <icon-user style="width: 12px;"/>
-            </el-badge>
-          </div>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="profile" class="center">个人资料</el-dropdown-item>
-              <el-dropdown-item command="logout" class="center">登出</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-    </div>
-  </div>
-</template>
+  <el-header style="border-bottom: solid 1px #6B4984; ">
+    <div class="df df-aic" style="height: 100%; font-size: 24px; font-weight: 700;">
+      <div v-if="hasBack" class="center pointer" style="height: 100%;" @click="$emit('back')"><icon-arrow-left style="margin-right: 10px; width: 24px;"/></div>
+      <slot/>
 
+    </div>
+  </el-header>
+</template>
 
 <script setup>
 // tip: 导入 component
-import { User as IconUser } from '@element-plus/icons'
+import { ArrowLeft as IconArrowLeft } from '@element-plus/icons'
 // tip: 导入 data
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
@@ -34,6 +20,11 @@ import { wait, emptyFn, clone, storage } from '@/fn'
 // tip: 定义 各种 use
 const store = useStore(), router = useRouter(), route = useRoute(), { t, locale } = useI18n({ inheritLocale: true })
 // tip: 定义 页面
+defineProps({
+  title: {type: String, default: ''},
+  hasBack: { type: Boolean, default: false },
+})
+defineEmits(['back'])
 // tip: 定义 不需要关联的
 // tip: 定义 需要关联的
 // tip: 定义 computed 计算的

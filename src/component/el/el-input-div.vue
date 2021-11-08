@@ -6,9 +6,9 @@
 
 <style scoped>
 .el-input-div {
-  /* todo 旧版的再div这边，新版的到label那边去了？ */
-  /* margin-left: 16px; */
+  margin-left: 15px;
   margin-bottom: 1px;
+  min-height: 28px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

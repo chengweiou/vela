@@ -1,12 +1,12 @@
+import { clone, emptyFn } from '@/fn'
 import service from '@/sdk/accountService'
-import clone from '@/fn/util/clone'
-import emptyFn from '@/fn/data/emptyFn'
 
 const CLEAN_STATE = {
   total: 0,
+  page: { curr: 1 },
   filter: { k: '', skip: 0, limit: 10 },
   list: [],
-  detail: {},
+  detail: { },
 }
 
 const state = clone(CLEAN_STATE)
@@ -101,6 +101,9 @@ const mutations = {
   },
   total(state, e) {
     state.total = e
+  },
+  page(state, e) {
+    state.page = e
   },
   resetFilter(state, e) {
     state.filter = { ...clone(CLEAN_STATE).filter }

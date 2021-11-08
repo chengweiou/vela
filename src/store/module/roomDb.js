@@ -1,5 +1,4 @@
 import clone from '@/fn/util/clone'
-import emptyFn from '@/fn/data/emptyFn'
 
 const CLEAN_STATE = {
   db: true,

@@ -1,8 +1,7 @@
 <template>
-  <div style="margin: 0 20px 20px;">
-    <div class="center">加载失败</div>
-  </div>
+<div style="margin: 0 3px; flex: 1; color: #855988; font-weight: 500; "><slot /></div>
 </template>
+
 <script setup>
 // tip: 导入 component
 // tip: 导入 data
@@ -14,9 +13,6 @@
 // tip: 定义 方法
 // tip: 初始化空数据
 </script>
+
 <style scoped>
-
-</style>
-<style>
-
 </style>

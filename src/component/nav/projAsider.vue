@@ -1,21 +1,29 @@
 <template>
-  <el-menu :default-active="active" :collapse="isCollapse" class="el-menu-vertical">
-    <el-menu-item index="personRoomRelate" @click="go('personRoomRelateList')"><icon-document-checked style="margin: 3px; width: 12px;"/>{{ t('roomList') }}</el-menu-item>
-    <el-menu-item index="friend" @click="go('friendList')"><icon-document-checked style="margin: 3px; width: 12px;"/>{{ t('friend') }}</el-menu-item>
-    <!-- <el-menu-item index="restapi" @click="goAsider('restapi')"><icon-document-checked style="margin: 3px; width: 12px;"/>restapi</el-menu-item> -->
+  <label for="profile-switch" class="center profile-switch" style="height: 60px; font-size: 18px; font-weight: 400;">Vela</label>
+  <input id="profile-switch" type="checkbox"/>
+  <div class="center df-column" style="">
+    <div style="width: 50px; height: 50px;"><avatar src="a.png"/></div>
+    <div class="center link pointer" style="width: 100%; height: 30px;" @click="go('profile')">个人资料</div>
+    <div class="center link pointer" style="width: 100%; height: 30px;" @click="logout">登出</div>
+  </div>
+  <el-menu :default-active="active" :collapse="isCollapse" class="el-menu-vertical-demo" style="border: 0;">
+    <el-menu-item index="personRoomRelate" @click="goAsider('personRoomRelateList')"><icon-document-checked style="margin: 3px; width: 12px;"/>{{ t('roomList') }}</el-menu-item>
+    <el-menu-item index="friend" @click="goAsider('friendList')"><icon-document-checked style="margin: 3px; width: 12px;"/>{{ t('friend') }}</el-menu-item>
     <el-sub-menu index="i18nGroup">
       <template #title>
         <icon-location style="margin: 3px; width: 12px;"/>
         <span>语言</span>
       </template>
-    <el-menu-item index="i18nZh" @click="changeLanguage('zh')">中文</el-menu-item>
-    <el-menu-item index="i18nEn" @click="changeLanguage('en')">English</el-menu-item>
+      <el-menu-item index="i18nZh" @click="changeLanguage('zh')">中文</el-menu-item>
+      <el-menu-item index="i18nEn" @click="changeLanguage('en')">English</el-menu-item>
     </el-sub-menu>
+    <!-- <el-menu-item index="restapi" @click="goAsider('restapi')"><icon-document-checked style="margin: 3px; width: 12px;"/>restapi</el-menu-item> -->
   </el-menu>
 </template>
 
 <script setup>
 // tip: 导入 component
+import Avatar from '@/component/image/avatar.vue'
 import { DocumentChecked as IconDocumentChecked, Location as IconLocation } from '@element-plus/icons'
 // tip: 导入 data
 import { ref, computed, onMounted } from 'vue'
@@ -45,8 +53,11 @@ const goAsider = (v) => {
 const onLogin = () => {
   store.dispatch('me/onLogin')
 }
-const logout = () => {
-  store.dispatch('me/logout')
+const logout = async() => {
+  // 处理在房间内登出的情况
+  if (route.name == 'room') await store.dispatch('room/leave', {id: store.state.room.detail.id})
+  await store.dispatch('me/logout')
+  store.dispatch('ws/disconnect')
 }
 const changeLanguage = (v) => {
   locale.value = v
@@ -64,15 +75,30 @@ onMounted(() => {
 })
 </script>
 
-
 <style scoped>
-
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 150px;
+}
+.profile-switch + input[type=checkbox] {
+  display: none;
+}
+.profile-switch:hover {
+  color: #4A90E2;
+}
+input[type=checkbox]+div {
+  transition: max-height ease-in-out .5s;
+  overflow: hidden;
+  max-height: 0;
+}
+input[type=checkbox]:checked+div {
+  max-height: 200px;
+}
 </style>
 
 <style>
-.el-menu-vertical:not(.el-menu--collapse) {
-  min-width: 150px;
-}
+</style>
+
+<style>
 
 </style>
 

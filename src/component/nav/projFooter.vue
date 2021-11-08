@@ -1,6 +1,6 @@
 <template>
   <div class="center df-column">
-    &copy;2020 chengweiou
+    &copy;2021 chengweiou
   </div>
 </template>
 

@@ -1,13 +1,12 @@
 import service from '@/sdk/friendService'
 import clone from '@/fn/util/clone'
-import emptyFn from '@/fn/data/emptyFn'
 
 const CLEAN_STATE = {
   total: 0,
   page: { curr: 1 },
   filter: { k: '', skip: 0, limit: 10 },
   list: [],
-  detail: emptyFn.friend(),
+  detail: {},
 }
 
 const state = clone(CLEAN_STATE)

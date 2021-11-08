@@ -1,13 +1,20 @@
 <template>
-  <div class="center" style="height: 100%;">
-    <div style="width: 500px;">
-      <section class="df">
+  <div class="center bg-dark c-white" style="width: 100%; height: 100%;">
+    <el-form style="width: 400px; height: 500px;" size="medium">
+      <div style="font-size: 42px;">Vela聊天系统</div>
+      <div style="margin-bottom: 10px;">聊天测试系统模板</div>
+      <div style="height: 58px;"></div>
+      <div style="height: 66px;"></div>
+      <section class="df" style="height: 50px;">
         <el-button v-loading="loading" :disabled="loading" style="flex: 1;" type="primary" size="large" @click="login(1)">登录-1</el-button>
         <el-button v-loading="loading" :disabled="loading" style="flex: 1;" type="primary" size="large" @click="login(2)">登录-2</el-button>
         <el-button v-loading="loading" :disabled="loading" style="flex: 1;" type="primary" size="large" @click="login(2)">登录-3</el-button>
       </section>
-    </div>
+    </el-form>
+
   </div>
+
+
 </template>
 
 <script setup>
