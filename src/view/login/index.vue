@@ -1,6 +1,6 @@
 <template>
   <div class="center bg-dark c-white" style="width: 100%; height: 100%;">
-    <el-form style="width: 400px; height: 500px;" size="medium">
+    <el-form style="width: 500px; height: 500px;" size="medium">
       <div style="font-size: 42px;">Vela聊天系统</div>
       <div style="margin-bottom: 10px;">聊天测试系统模板</div>
       <div style="height: 58px;"></div>
@@ -25,7 +25,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { wait, emptyFn, clone, storage } from '@/fn'
+import { wait, empty, clone, storage } from '@/fn'
 // tip: 定义 各种 use
 const store = useStore(), router = useRouter(), route = useRoute(), { t, locale } = useI18n({ inheritLocale: true })
 // tip: 定义 页面

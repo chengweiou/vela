@@ -24,7 +24,7 @@ import { ElNotification } from 'element-plus'
 import { ref, computed, onBeforeUnmount, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import { wait, emptyFn } from '@/fn'
+import { wait, empty } from '@/fn'
 // tip: 定义 各种 use
 const store = useStore(), router = useRouter(), route = useRoute()
 // tip: 定义 页面
@@ -79,7 +79,7 @@ const count = () => {
 }
 
 // tip: 初始化空数据
-store.state.room.detail = emptyFn.room()
+store.state.room.detail = empty.room()
 store.state.room.personList = []
 store.dispatch('room/resetHistoryFilter')
 enterRoom()

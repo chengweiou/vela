@@ -13,7 +13,7 @@ export const router = createRouter({
       ],
     },
     {
-      path: '/chat',
+      path: '/vela',
       components: { full: () => import('./admin.vue') },
       children: [
         { name: 'personRoomRelateList', path: 'personRoomRelate', component: () => import('@/view/personRoomRelate/list.vue') },

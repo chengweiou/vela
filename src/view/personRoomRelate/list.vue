@@ -43,7 +43,7 @@ import ListSearchBar from '@/component/proj/listSearchBar.vue'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import { wait, emptyFn, clone, date } from '@/fn'
+import { wait, empty, clone, date } from '@/fn'
 // tip: 定义 各种 use
 const store = useStore(), router = useRouter(), route = useRoute()
 // tip: 定义 页面
