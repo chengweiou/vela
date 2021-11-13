@@ -18,16 +18,17 @@ export default {
     { id: 3, name: 'name', imgsrc: 'a.png', unread: 3, createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
   ],
 
-  'GET /friend/count': 2,
-  'GET /friend': [
+  'GET /me/friend/count': 2,
+  'GET /me/friend': [
     { id: 1, person: {id: 1}, target: {id: 2}, createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
     { id: 2, person: {id: 1}, target: {id: 2}, createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
     { id: 3, person: {id: 1}, target: {id: 2}, createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
   ],
-  'GET /friend/check': false,
+  'GET /me/friend/check': false,
 
-  'GET /personRoomRelate/count': 2,
-  'GET /personRoomRelate': [
+  'GET /me/personRoomRelate/key': { id: 1, type: 'SOLO', personIdList: [1, 2], createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
+  'GET /me/personRoomRelate/count': 2,
+  'GET /me/personRoomRelate': [
     { id: 1, person: {id: 1}, room: {id: 1}, name: 'name', imgsrc: 'a.png', unread: 3, lastMessage: 'last message...', lastMessageAt: '2019-02-03 10:10:10', createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
     { id: 2, person: {id: 1}, room: {id: 1}, name: 'name', imgsrc: 'a.png', unread: 3, lastMessage: 'last message...', lastMessageAt: '2019-02-03 10:10:10', createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
     { id: 3, person: {id: 1}, room: {id: 1}, name: 'name', imgsrc: 'a.png', unread: 3, lastMessage: 'last message...', lastMessageAt: '2019-02-03 10:10:10', createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
@@ -37,8 +38,8 @@ export default {
   'POST /me/room/:id/leave': true,
   'GET /me/room/key': { id: 1, type: 'SOLO', personIdList: [1, 2], createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
 
-  'GET /history/count': 2,
-  'GET /history': [
+  'GET /me/history/count': 2,
+  'GET /me/history': [
     { id: 1, room: {id: 1}, person: {id: 1}, sender: {id: 1}, type: 'TEXT', v: 'this is v', unread: true, createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
     { id: 2, room: {id: 1}, person: {id: 2}, sender: {id: 2}, type: 'TEXT', v: 'this is v', unread: true, createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },
     { id: 3, room: {id: 1}, person: {id: 2}, sender: {id: 2}, type: 'TEXT', v: 'this is v', unread: true, createAt: '2019-02-03 10:10:10', updateAt: '2019-02-03 10:10:10' },

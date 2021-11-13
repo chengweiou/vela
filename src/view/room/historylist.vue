@@ -115,10 +115,6 @@ const toBottom = () => {
 // tip: 初始化空数据
 
 // tip 其他生命周期
-onBeforeUnmount(() => {
-  // 处理在房间内登出的情况
-  if (detail.value.id) store.dispatch('room/leave', {id: detail.value.id})
-})
 watch(scroll, (v, prevV) => {
   if (scroll.value) toBottom()
   store.dispatch('room/changeScroll', false)

@@ -39,7 +39,15 @@ const actions = {
       dispatch('failBox/onRest', rest, { root: true })
       return
     }
-    commit('detail', { ...rest.data, reviewList: rest.data.review ? rest.data.review.split(',') : [], rejectList: rest.data.reject ? rest.data.reject.split(',') : [] })
+    commit('detail', { ...rest.data })
+  },
+  async findByKey({ commit, dispatch, state, rootState }, payload, config = {}) {
+    let rest = await service.me().findByKey({ room: {id: payload.room.id} })
+    if (rest.code !== 'OK') {
+      dispatch('failBox/onRest', rest, { root: true })
+      return
+    }
+    commit('detail', { ...rest.data })
   },
   resetFilter({ commit, dispatch, state, rootState }, payload, config = {}) {
     commit('resetFilter', 'REMOVE')

@@ -49,8 +49,16 @@ const enterRoom = async() => {
   loading.value = false
   if (!pList[0]) return
   ElNotification({ type: 'success', title: '进入房间成功' })
+  findRelate()
   findPerson()
   read()
+}
+const findRelate = async() => {
+  loading.value = true
+  let pList = await Promise.all([store.dispatch('personRoomRelate/findByKey', { room: {id: route.params.id} }), wait(1000)])
+  loading.value = false
+  if (!pList[0]) return
+  checkFriend()
 }
 const findPerson = async() => {
   loading.value = true

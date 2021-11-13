@@ -34,6 +34,13 @@ class Me {
     }
     return fetchUtil.run(url, options)
   }
+  static findByKey(e) {
+    let url = `${site.carina}/me/personRoomRelate/key?${paramUtil.createUrlEncode(e)}`
+    let options = {
+      method: 'GET',
+    }
+    return fetchUtil.run(url, options)
+  }
   static count(filter) {
     let url = `${site.carina}/me/personRoomRelate/count?${paramUtil.createUrlEncode(filter)}`
     let options = {
