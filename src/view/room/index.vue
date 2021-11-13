@@ -1,5 +1,5 @@
 <template>
-  <proj-header :has-back="true" @back="go('personRoomRelateList')">{{detail.name}}</proj-header>
+  <proj-header :has-back="true" @back="go('personRoomRelateList')">{{relate.name}}</proj-header>
   <div style="margin-bottom: 20px;"></div>
   <div>
     <tab v-model:tab="tab" name="room" :list="tabNameList"/>
@@ -36,6 +36,7 @@ const loading = ref(true)
 // tip: 定义 computed 计算的
 const me = computed(() => store.state.me.user)
 const detail = computed(() => store.state.room.detail)
+const relate = computed(() => store.state.personRoomRelate.detail)
 const tab = computed(() => store.state.tab.room)
 // todo 判断server history的时候才出现
 // tip: 定义 方法
