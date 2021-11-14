@@ -56,7 +56,7 @@ const enterRoom = async() => {
 }
 const findRelate = async() => {
   loading.value = true
-  let pList = await Promise.all([store.dispatch('personRoomRelate/findByKey', { room: {id: route.params.id} }), wait(1000)])
+  let pList = await Promise.all([store.dispatch('personRoomRelate/findByKey', {room: {id: route.params.id}}), wait(1000)])
   loading.value = false
   if (!pList[0]) return
   checkFriend()

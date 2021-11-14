@@ -9,7 +9,7 @@
         <section v-for="(e, i) in historyList" :key="i">
           <div v-if="e.showTime" class="center" style="margin: 10px;">{{ date(e.updateAt) }}</div>
           <div class="df" :class="e.sender.id == me.id ? 'selfPosition' : 'otherPosition'">
-            <!-- <div style="width: 30px; height: 30px;"><avatar :src="personList.find(p=>p.id=e.sender.id).imgsrc" /></div> -->
+            <div style="width: 30px; height: 30px;"><avatar :src="$img + personList.find(p=>p.id==e.sender.id).imgsrc" /></div>
             <div>
               <!-- // todo 显示图片 地图 -->
               <section :class="e.sender.id == me.id ? 'selfV' : 'otherV'" style="margin-bottom: 10px; padding: 6px; border-radius: 3px;">
