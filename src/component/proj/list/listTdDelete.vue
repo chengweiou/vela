@@ -9,7 +9,7 @@
 <script setup>
 // tip: 导入 component
 import { ListTd } from '.'
-import { Delete as IconDelete } from '@element-plus/icons'
+import { Delete as IconDelete } from '@element-plus/icons-vue'
 // tip: 导入 data
 // tip: 定义 各种 use
 // tip: 定义 页面

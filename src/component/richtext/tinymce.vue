@@ -1,6 +1,6 @@
 <template>
   <editor v-model="v" :init="{ plugins: ['image'], images_upload_handler: readPic }" @update:model-value="(value) => emit('update:modelValue', value)"/>
-  <!-- <el-input v-model="v" @update:model-value="(value) => emit('update:modelValue', value)" type="textarea" /> -->
+  <!-- <el-input v-model="v" type="textarea" @update:model-value="(value) => emit('update:modelValue', value)" /> -->
 </template>
 
 <script setup>

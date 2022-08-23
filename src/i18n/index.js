@@ -9,6 +9,9 @@ storage.set('lang', lang)
 export const i18n = createI18n({
   locale: lang,
   globalInjection: true,
+  missingWarn: false,
+  fallbackWarn: false,
+  inheritLocale: true,
   // vite.config.js 中加载所有文件
   messages,
 })

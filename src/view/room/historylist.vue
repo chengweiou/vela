@@ -124,6 +124,6 @@ watch(scroll, (v, prevV) => {
 <style scoped>
 .selfPosition { flex-direction: row-reverse; }
 .otherPosition { flex-direction: row; }
-.selfV { background: #070B34; }
-.otherV { background: white; color: #070B34; }
+.selfV { margin-right: 10px; background: #070B34; }
+.otherV { margin-left: 10px; background: white; color: #070B34; }
 </style>

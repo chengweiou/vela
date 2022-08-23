@@ -1,6 +1,6 @@
 <template>
   <div class="center bg-dark c-white" style="width: 100%; height: 100%;">
-    <el-form style="width: 500px; height: 500px;" size="medium">
+    <el-form style="width: 500px; height: 500px;" size="">
       <div style="font-size: 42px;">Vela聊天系统</div>
       <div style="margin-bottom: 10px;">聊天测试系统模板</div>
       <div style="height: 58px;"></div>
